@@ -1,24 +1,39 @@
-#Sw implementation of CNN
 from PIL import Image
-import numpy
+import numpy as np
 #import matplotlib.pyplot as plt
 #import matplotlib.image as mpimg
 
-def convolve(im,ker):#fonction qui convolue 2 image ensemble
-im_width, im_height = im.size 
-ker_width, ker_height = ker.size 
-#create vect
-for c in range(3):
- for i in range(im_widt)
-   for j in range(im_height)
-       out(i,j,c)=out(i,j,c)+imge(im_widt+ker_widt-1-i,im_height+ker_height-1,c)*kern(i,j,c)
-return out
+def convolve(im,ker):#fonction qui convolue 2 le ker et l'image (matrice)
+    im_width, im_height, RGB=im.shape
+    #print(im.shape)
+    ker_width, ker_height,RGB, n_filtre=ker.shape
+    #print(ker.shape)
+    out=np.zeros((im_width,im_height,n_filtre))
+    buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))##create output vect
+    for i in range(im_width+ker_width-1):
+        for j in range(im_height+ker_height-1):
+            for k in range(3):#RGim_height+ker_heightB mapping 
+                for c in range(n_filtre):
+                     for s_w in range(ker_width):
+                         for s_h in range(ker_height):
+                             buff[i,j,c]=buff[i,j,c]+im[im_width-i-1,im_height-j-1,k]*ker[s_w,s_h,k,c]
+                              #                   if(i>ker_height )
+ #                   else
+    out=buff[0:im_width+1,0:im_height+1,0:4]
+    return out
 
 #RGB=3
 #image=numpy.zeros((x_len,y_len,RGB))
 #img = mpimg.imread("image.jpg")
-image = Image.open("image.jpg")
-kernel = Image.open("kernel.jpg")
+image = Image.open("image 256 256.jpg")
+im_arr = np.array(image)
+print(im_arr.shape)
+print(im_arr)
+ker_arr = np.random.rand(3,3,3,64)#kernel de convolution mettre d'autre coeffs plus tard
+print(ker_arr.shape)
+print(ker_arr)
+res_conv=convolve(im_arr,ker_arr)
+print(res_conv)
 #width, height = image.size
 #print()
 #mpimg.
