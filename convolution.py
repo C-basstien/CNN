@@ -35,11 +35,37 @@ def convolve2(im,ker):
     buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))##create output vect
     for filter_index in range(n_filtre):
         for color_index in range(3):#RGB mapping 
-            buff[:,:,n_filtre]=buff[:,:,n_filtre] + signal.convolve2d(im, ker)
+           buff[:,:,filter_index]=buff[:,:,filter_index] + signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index])
+            #temp=signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index])
     out=buff[0:im_width,0:im_height,0:4]
     return out
 
-
+def relu(vect):
+    n_x, n_y, n_channel=vect.shape
+    out=vect
+    for i_x in range(n_x):
+        for i_y in range(n_y):
+            for i_channel in range(n_channel):
+                if(vect[i_x,i_y,i_channel] < 0):
+                    out[i_x,i_y,i_channel]=0
+    return out
+def maxpool(vect):
+    n_x, n_y, n_channel = vect.shape
+   # print(n_x)
+    #print(n_y)
+    stride=4
+    buff=np.zeros((stride,stride))
+    out=np.zeros((n_x/stride,n_y/stride,n_channel))
+    for i_channel in range(n_channel):
+        for i_x in range(0,n_x,stride+1):
+            for i_y in range(0,n_y,stride+1):
+               buff[:,:]= vect[i_x:i_x+stride,i_y:i_y+stride,i_channel]
+              # print(buff)
+               #print(buff.shape)
+               out[i_x/stride,i_y/stride,i_channel]=buff.max()
+               #out[i_x/stride,i_y/stride,i_channel]
+               #np.amax(buff, axis=1)
+    return out
 #RGB=3
 #image=numpy.zeros((x_len,y_len,RGB))
 #img = mpimg.imread("image.jpg")
@@ -51,12 +77,17 @@ ker_arr = np.random.rand(3,3,3,1)#kernel de convolution mettre d'autre coeffs pl
 #ker_arr = np.random.rand(3,3,3,64)#kernel de convolution mettre d'autre coeffs plus tard
 
 print(ker_arr.shape)
-print(ker_arr)
-res_conv=convolve(im_arr,ker_arr)
+#print(ker_arr)
+#res_conv=convolve(im_arr,ker_arr)
 #print(res_conv)
-res_conv2=convolve(im_arr,ker_arr)
+res_conv2=convolve2(im_arr,ker_arr)
+print("compar")
+print(res_conv2)
+#print(res_conv-res_conv2)
+relu_res=relu(res_conv2)
+maxp_res=maxpool(res_conv2)
+print(maxp_res)
 #print(res_conv2)
-print(np.array_equal(res_conv,res_conv2))
 #width, height = image.size
 #print()
 #mpimg.
