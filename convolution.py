@@ -66,6 +66,8 @@ def maxpool(vect):
                #out[i_x/stride,i_y/stride,i_channel]
                #np.amax(buff, axis=1)
     return out
+def reshape1 (vect,n):
+    return np.reshape(vect,n)
 #RGB=3
 #image=numpy.zeros((x_len,y_len,RGB))
 #img = mpimg.imread("image.jpg")
@@ -87,6 +89,8 @@ print(res_conv2)
 relu_res=relu(res_conv2)
 maxp_res=maxpool(res_conv2)
 print(maxp_res)
+reshp_res=reshape1(maxp_res,64*64)
+
 #print(res_conv2)
 #width, height = image.size
 #print()
