@@ -81,7 +81,7 @@ def matrix_multilpy2(Matrix,Vect):
     return np.dot(Matrix,Vect)
 
 def softmax(vect):
-    return np.exp(vect)/(np.sum(np.exp(vect)))
+    return (np.exp(vect))/(np.sum(np.exp(vect)))
         
 #RGB=3
 #image=numpy.zeros((x_len,y_len,RGB))
@@ -94,8 +94,8 @@ filtre_number=64
 class_number=10
 ker_arr = np.random.rand(3,3,3,filtre_number)#kernel de convolution mettre d'autre coeffs plus tard
 #ker_arr = np.random.rand(3,3,3,64)#kernel de convolution mettre d'autre coeffs plus tard
-matrix_classe=np.random.rand(class_number,16*16*filtre_number)
-ker_arr2 = np.random.rand(3,3,64,filtre_number)
+matrix_classe=np.random.rand(class_number,16*16*filtre_number)/10000
+ker_arr2 = np.random.rand(3,3,64,filtre_number)/10000
 #print(ker_arr.shape)
 #print(ker_arr)
 #res_conv=convolve(im_arr,ker_arr)
@@ -114,6 +114,7 @@ reschape_res=reshape2(maxp_res2,16*16*filtre_number)
 matrix_prod_res=matrix_multilpy2(matrix_classe,reschape_res)
 softmax_res=softmax(matrix_prod_res)
 print(softmax_res)
+print(sum(softmax_res))#=~1
 #print(maxp_res)
 #reshp_res=reshape1(maxp_res,64*64*64)
 
