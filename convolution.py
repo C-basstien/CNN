@@ -72,10 +72,16 @@ def reshape2 (vect,n):
 
 def matrix_multilpy(Matrix,Vect): 
     m_col, m_line = Matrix.shape
-    out=np.zeros((1,m_col))
-    for i_col in range(m_line):
+    print(m_col,m_line)
+    out=np.zeros((m_col))
+    for i_col in range(m_col):
+        print("Column:")
+        print(i_col)
         for i_line in range(m_line):
-            out[1,i_col]=out[1,i_col]+Matrix[i_col,i_line]*Vect[1,i_line]
+            print("Line:")
+            print(i_line)
+            print(Vect[i_line])
+            out[i_col]=out[i_col]+Matrix[i_col,i_line]*Vect[i_line]
     return out
 def matrix_multilpy2(Matrix,Vect):
     return np.dot(Matrix,Vect)
@@ -96,14 +102,14 @@ ker_arr = np.random.rand(3,3,3,filtre_number)#kernel de convolution mettre d'aut
 #ker_arr = np.random.rand(3,3,3,64)#kernel de convolution mettre d'autre coeffs plus tard
 matrix_classe=np.random.rand(class_number,16*16*filtre_number)/10000
 ker_arr2 = np.random.rand(3,3,64,filtre_number)/10000
-#print(ker_arr.shape)
-#print(ker_arr)
-#res_conv=convolve(im_arr,ker_arr)
-#print(res_conv)
-#res_conv2=convolve2(im_arr,ker_arr)
-#print("compar")
-#print(res_conv2)
-#print(res_conv-res_conv2)
+print(ker_arr.shape)
+print(ker_arr)
+res_conv=convolve(im_arr,ker_arr)
+print(res_conv)
+res_conv2=convolve2(im_arr,ker_arr)
+print("compar")
+print(res_conv2)
+print(res_conv-res_conv2)
 res_conv2=convolve2(im_arr,ker_arr)
 relu_res=relu(res_conv2)
 maxp_res=maxpool(relu_res)
@@ -115,6 +121,16 @@ matrix_prod_res=matrix_multilpy2(matrix_classe,reschape_res)
 softmax_res=softmax(matrix_prod_res)
 print(softmax_res)
 print(sum(softmax_res))#=~1
+
+
+#m=np.random.rand(2,3)
+#print(m)
+#v=np.random.rand(3,1)
+#print(v)
+#print(matrix_multilpy(m,v))
+#print(matrix_multilpy2(m,v))
+
+
 #print(maxp_res)
 #reshp_res=reshape1(maxp_res,64*64*64)
 
