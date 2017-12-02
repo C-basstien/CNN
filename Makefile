@@ -6,7 +6,7 @@
 
 FMT = clang-format -i -style=file
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Werror
+CXXFLAGS =  -Wall -lpng
 # Uncomment the following to compile in debug mode with no optimizations
 # (for instance, this is useful to better track memory leaks):
 # DFLAGS = -g -O0
