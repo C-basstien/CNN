@@ -6,17 +6,17 @@
 
 int main()
 {
-    //getPGMfile()
-    unsigned int im_size[3];
-    unsigned int ker_size[4]={3,3,3,2};
+    unsigned int im_size[3];/**sizes of the image array**/
+    unsigned int ker_size[4]={3,3,3,2};/*choose the size of the kernel array**/
     char* f_name=(char*)"test.png";
     char ***im=read_png_file(f_name,im_size );
-    double **** ker=gen_rand_ker(ker_size);
+    double **** ker=gen_rand_ker(ker_size);/**create a random kernel**/
 	cout<<im_size[0]<<endl;
 	cout<<im_size[1]<<endl;
 	cout<<im_size[2]<<endl;
 	cout << "Image readed sucessfully\n" << endl;
 	double *** res=convolve(im,ker,im_size,ker_size);
+	//you can implement the CNN layer here by calling the function maxpool,convolution ... etc
     cout << "Convolution Done" << endl;
     unsigned int sig_size[3];sig_size[0]=im_size[0];sig_size[1]=im_size[1];sig_size[2]=ker_size[3];
     relu(res,sig_size);
