@@ -66,14 +66,14 @@ char*** read_png_file(char* file_name,unsigned int* output_im_size)
 
         }
         png_read_image(png_ptr, row_pointers);
-        char *** buff= new char **[width]();
+        char *** buff= new char **[width]();/**create a 3d array to store the image**/
         for (unsigned int i = 0; i < width; i++)
         {
             buff[i] = new char*[height]();
             for (unsigned int j = 0; j < height;j++){buff[i][j] = new char[3]();}
             //cout<<"running init"<<endl;
         }
-        for (unsigned int y=0; y<height; y++)
+        for (unsigned int y=0; y<height; y++)/**read values of the array**/
         {
             png_byte* row = row_pointers[y];
             for (unsigned int x=0; x<width; x++)
