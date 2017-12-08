@@ -1,5 +1,5 @@
 #include "../headers/main.hpp"
-void relu(double*** sig,unsigned int* sig_size)
+void relu(double*** sig,unsigned int* sig_size)// transform all the negatives coefficient of the array into 0
 {
     for (unsigned int i = 0; i <sig_size[0];i++)
     {
