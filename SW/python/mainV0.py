@@ -1,47 +1,50 @@
+#import library
 from PIL import Image
 import numpy as np
-#import matplotlib.pyplot as plt
-#import matplotlib.image as mpimg
 from scipy import signal
-def convolve(im,ker):#fonction qui convolue 2 le ker et l'image (matrice)
-    im_width, im_height, channel=im.shape
-    #print(im.shape)
-    ker_width, ker_height,channel, n_filtre=ker.shape
-    #print(ker.shape)
+
+
+def convolve(im,ker):#function that convolve an image array and a kernel
+    
+    im_width, im_height, channel=im.shape#get the dimensions of the image, image have 3 dimensions
+    ker_width, ker_height,channel, n_filtre=ker.shape#get the dimensions of the kernel, image have 4 dimensions
+   
+    #initialisation of the matrix
     out=np.zeros((im_width,im_height,n_filtre))
-    buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))##create output vect
-    for filter_index in range(n_filtre):
-        for color_index in range(channel):#RGB mapping  
-            for i in range(im_width+ker_width):
-                print(i)
-                for j in range(im_height+ker_height):    
-                    #convolution summation
-                     for k in range(ker_width):
-                         for l in range(ker_height):
-                             if( i-k <0 or i-k >=im_width or j-l<0 or j-l >= im_height ):
+    buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))
+    
+    #filtering loop
+    for filter_index in range(n_filtre):#number of filter
+        for color_index in range(channel):#image channel number  
+            for i in range(im_width+ker_width):#width of the convolved output
+                for j in range(im_height+ker_height):#height of the convolved output    
+                     for k in range(ker_width):#sweep the kernel in horizontal direction
+                         for l in range(ker_height):#sweep the kernel in vertical direction
+                             if( i-k <0 or i-k >=im_width or j-l<0 or j-l >= im_height ):#when a coefficient is outside the 
                                  0
                              else:
+                                #convolution summation and product
                                  buff[i,j,filter_index]=buff[i,j,filter_index]+im[i-k,j-l,color_index]*ker[k,l,color_index,filter_index]
-                              #                   if(i>ker_height )
- #                   else
-    out=buff[0:im_width,0:im_height,0:filter_index+1]
+                              
+
+    out=buff[0:im_width,0:im_height,0:filter_index+1]#store the revelant part of buff in the output
     return out
-def convolve2(im,ker):
+def convolve2(im,ker):#convolve an 3d array with a 4d kernel
+    #get the dimensions of the image and kernel
     im_width, im_height, channel=im.shape
-    #print(im.shape)
     ker_width, ker_height,channel, n_filtre=ker.shape
-    #print(ker.shape)
+    #initialisation of the matrix
     out=np.zeros((im_width,im_height,n_filtre))
     buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))##create output vect
-    for filter_index in range(n_filtre):
-        for color_index in range(channel):#RGB mapping 
+    for filter_index in range(n_filtre):#number of filter
+        for color_index in range(channel):#number of channel in the array
+           #convolution : summation and product
            buff[:,:,filter_index]=buff[:,:,filter_index] + signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index])
-            #temp=signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index])
     out=buff[0:im_width,0:im_height,0:filter_index+1]
     return out
 
-def relu(vect):
-    n_x, n_y, n_channel=vect.shape
+def relu(vect):#function for 3d array that replace by 0 the negative values stored in the array
+    n_x, n_y, n_channel=vect.shape#get the dimensions
     out=vect
     for i_x in range(n_x):
         for i_y in range(n_y):
@@ -49,28 +52,22 @@ def relu(vect):
                 if(vect[i_x,i_y,i_channel] < 0):
                     out[i_x,i_y,i_channel]=0
     return out
-def maxpool(vect):
-    n_x, n_y, n_channel = vect.shape
-   # print(n_x)
-    #print(n_y)
-    stride=4
-    buff=np.zeros((stride,stride))
+def maxpool(vect):#function that return a matrix of the local maximun of the input matrix
+    n_x, n_y, n_channel = vect.shape#get the dimensions
+    stride=4#size of the local analyse -> ouput matrix dimension will be n_x/4, n_y/4, n_channel
+    buff=np.zeros((stride,stride))#initialisation
     out=np.zeros((n_x/stride,n_y/stride,n_channel))
     for i_channel in range(n_channel):
         for i_x in range(0,n_x,stride+1):
             for i_y in range(0,n_y,stride+1):
-               buff[:,:]= vect[i_x:i_x+stride,i_y:i_y+stride,i_channel]
-              # print(buff)
-               #print(buff.shape)
-               out[i_x/stride,i_y/stride,i_channel]=buff.max()
-               #out[i_x/stride,i_y/stride,i_channel]
-               #np.amax(buff, axis=1)
+               buff[:,:]= vect[i_x:i_x+stride,i_y:i_y+stride,i_channel]#area of analyse selection
+               out[i_x/stride,i_y/stride,i_channel]=buff.max()#maximun of the area 
     return out
-def reshape2 (vect,n):
+def reshape2 (vect,n):#return a vector of size 1xn
     return np.reshape(vect,n)
     
 
-def matrix_multilpy(Matrix,Vect): 
+def matrix_multilpy(Matrix,Vect): #matrix product principle
     m_col, m_line = Matrix.shape
     print(m_col,m_line)
     out=np.zeros((m_col))
@@ -83,7 +80,7 @@ def matrix_multilpy(Matrix,Vect):
             print(Vect[i_line])
             out[i_col]=out[i_col]+Matrix[i_col,i_line]*Vect[i_line]
     return out
-def matrix_multilpy2(Matrix,Vect):
+def matrix_multilpy2(Matrix,Vect): #matrix product optimized
     return np.dot(Matrix,Vect)
 
 def softmax(vect):
