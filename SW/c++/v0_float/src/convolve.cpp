@@ -17,7 +17,7 @@ double*** convolve(char*** im, double**** ker,unsigned int* im_size, unsigned in
     unsigned int buff_size[3]= {im_width+ker_width-1,im_height+ker_height-1,ker_filter};
     if(ker_canal!=im_canal){printf("error ker and input have different canal size");abort();}
 	double *** buff=alloc_matrix(buff_size);
-	/**Filter Loop**/
+	/**Filtering/Convonlution Loop**/
 	for(unsigned int filter_index=0;filter_index< ker_filter;filter_index++)
 	{
 		for(unsigned int canal_index=0;canal_index< im_canal;canal_index++)
