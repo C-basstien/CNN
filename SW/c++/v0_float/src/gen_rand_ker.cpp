@@ -1,6 +1,6 @@
 #include "../headers/main.hpp"
 
-double**** gen_rand_ker(unsigned int* ker_size)
+double**** gen_rand_ker(unsigned int* ker_size)// create a 4D matrix with random coefficient between -1 +1
 {
     double**** ker =new double ***[ker_size[0]]();
     for (unsigned int i = 0; i <ker_size[0];i++)
