@@ -15,14 +15,14 @@ T* alloc_matrix(T* matrix,unsigned int * dim_val_array, unsigned int  dim_size_a
 }*/
 /**temporary solution**/
 double*** alloc_matrix(unsigned int * dim_array)
-{
+{/**Allocation of 3D matrix dim_array indic the size of each dimensions**/
     double *** mat= new double **[dim_array[0]]();
     for (unsigned int i = 0; i <dim_array[0];i++)
     {
         mat[i] = new double *[dim_array[1]]();
         for (unsigned int j = 0; j <dim_array[1];j++)
         {
-            mat[i][j] = new double[dim_array[2]]();
+            mat[i][j] = new double[dim_array[2]]();//() to initialize to 0 the values of the array
         }
     }
     return mat;
