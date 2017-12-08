@@ -1,0 +1,15 @@
+
+
+
+#ifndef MAXPOOL_HPP
+#define MAXPOOL_HPP
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <math.h>
+
+using namespace std;
+double*** maxpool(double ***sig,int* sig_size,int stride);
+
+#endif
