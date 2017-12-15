@@ -87,12 +87,12 @@ def convolve(im,ker,biases):
     ker_width, ker_height,channel, n_filtre=ker.shape
     #print(ker.shape)
     out=np.zeros((im_width,im_height,n_filtre))
-    buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))##create output vect
+    ##buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))##create output vect
     for filter_index in range(n_filtre):
         for color_index in range(channel):#RGB mapping 
-           buff[:,:,filter_index]=buff[:,:,filter_index] + signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index])
+           out[:,:,filter_index]=out[:,:,filter_index] + signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index],mode='same')
             #temp=signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index])
-    out=buff[0:im_width,0:im_height,0:filter_index+1]+biases[0:filter_index+1]
+    out=buff[:,:,0:filter_index+1]+biases[0:filter_index+1]
     return out
 
 def relu(vect):
