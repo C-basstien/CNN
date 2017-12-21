@@ -92,3 +92,19 @@ char*** read_png_file(char* file_name,unsigned int* output_im_size)
         fclose(fp);
         return buff;
 }
+
+double *** chartodouble_arr(char*** im,unsigned int* im_size)
+{
+	 double *** out=alloc_matrix(im_size);
+    for (unsigned int i = 0; i <im_size[0];i++)
+    {
+        for (unsigned int j = 0; j <im_size[1];j++)
+        {
+            for (unsigned int k = 0; k <im_size[2];k++)
+            {
+                out[i][j][k]=(double)im[i][j][k];
+            }
+        }
+    }
+	return out;
+}

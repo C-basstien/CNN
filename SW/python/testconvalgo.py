@@ -29,10 +29,19 @@ def convolve(im,ker):#function that convolve an image array and a kernel
                     #convolution summation and product
                         buff[i,j]=buff[i,j]+im[i-k,j-l,]*ker[k,l]
     return buff
-imsize=20
+
+#ker and im definition to compare manually the result of the C algorithm and python
+
+tab1=np.array([[10, 3, 12, 2] ,[1, 6, 1, 2], [9, 6, 7, 12], [13, 6, 5, 2]])#image 4x4
+tab2=np.array([[1, 4, 3], [2, 6, 8], [20, 5, 6]])#kernel 3x3
+imsize=4
 kersize=3
-tab1 = np.random.rand(imsize,imsize)
-tab2 = np.random.rand(kersize,kersize)
+
+###uncoment this part to test with others values the result##
+#imsize=4#change this value to test with others sizes
+#kersize=3#change this value to test with others sizes
+#tab1 = np.random.rand(imsize,imsize)#image 4x4
+#tab2 = np.random.rand(kersize,kersize)#kernel 3x3
 print(tab1)
 print(tab2)
 #Python lib function convolution function test with different mode
@@ -51,6 +60,12 @@ print("conv_same2=\n",conv_same1)
 print("conv_valid2=\n",conv_valid1)
 
 #check differences between python lib and our function, should be 0!
-print(conv_full1-conv_full2)
-print(conv_same1-conv_same2)
-print(conv_valid1-conv_valid2)
+#print(conv_full1-conv_full2)
+#print(conv_same1-conv_same2)
+#print(conv_valid1-conv_valid2)
+
+print("image dim: ",tab1.shape)
+print("ker dim: ",tab2.shape)
+#print("conv_full1 dim: ",conv_full1.shape)
+print("conv_same1 dim: ",conv_same1.shape)
+#print("conv_valid1 dim: ",conv_valid1.shape)
