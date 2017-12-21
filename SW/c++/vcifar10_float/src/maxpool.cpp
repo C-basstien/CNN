@@ -1,3 +1,4 @@
+#include "../headers/main.hpp"
 double*** maxpool(double ***sig,unsigned int* sig_size,unsigned int stride, unsigned int size)
 {
     unsigned int max_size[3]= {sig_size[0]/stride,sig_size[1]/stride,sig_size[2]};

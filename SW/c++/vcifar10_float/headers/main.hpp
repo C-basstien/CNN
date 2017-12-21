@@ -19,6 +19,7 @@ using namespace std;
 double*** alloc_matrix(unsigned int * dim_array);
 void print_matrix(double*** mat,unsigned int * dim_array);
 void print_ker(double**** ker,unsigned int * dim_array);
+void print_vector(double* vect, unsigned int size);
 void relu(double*** sig,unsigned int* sig_size);
 double*** convolve(double*** im, double**** ker,unsigned int* im_size, unsigned int* ker_size, double * bias);
 char*** read_png_file(char* file_name,unsigned int* output_im_size);
@@ -29,6 +30,7 @@ double * softmax(double* V,unsigned int size);
 double*** troncature_image(double ***im,unsigned int im_size);
 double*** norm_image(double ***im,unsigned int* im_size);
 double*** maxpool(double ***sig,unsigned int* sig_size,unsigned int stride, unsigned int size);
+double * reshape(double *** M,unsigned int* size);
 
 void testconv(void);
 

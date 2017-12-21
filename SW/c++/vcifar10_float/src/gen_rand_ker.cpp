@@ -22,3 +22,19 @@ double**** gen_rand_ker(unsigned int* ker_size)
     }
     return ker;
 }
+
+
+double** gen_rand_matrix(unsigned int* m_size)
+{
+    double** m =new double *[m_size[0]]();
+    for (unsigned int i = 0; i <m_size[0];i++)
+    {
+		 m[i] = new double[m_size[1]]();
+		 for (unsigned int l = 0; l <m_size[1] ;l++)
+		 {
+		     ker[i][j]=((rand()/(double)(RAND_MAX)));
+
+		 }
+     }
+    return m;
+}

@@ -42,3 +42,13 @@ void print_ker(double**** ker,unsigned int * dim_array)
     }
 }
 
+void print_vector(double* vect, unsigned int size)
+{
+	for (unsigned int i = 0; i <size ;i++)
+	{
+		 printf("[%u]:%lf\n",i,vect[i]);
+	}
+}
+
+
+
