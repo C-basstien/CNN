@@ -52,7 +52,10 @@ int main()
   cout<<"Read coefficients"<<endl;
   read_coefficient("CNN_coeff_3x3.txt", coeff_weight1, coeff_weight2, coeff_weight3, coeff_biases1, coeff_biases2, coeff_biases3, coeff_biases4, coeff_reshape);
 
-  /*Parameter
+  /*Parameters:
+
+  matrix_in[3][24][24]	  
+
   coeff_weight1[3][64][3][3];
   coeff_weight2[64][32][3][3];
   coeff_weight3[32][20][3][3];
