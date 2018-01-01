@@ -82,21 +82,24 @@ def normalization(im):
     delta= math.sqrt(np.mean((im[:,:,:]-mean)**2))
     im_norm[:,:,:]=(im[:,:,:]-mean)/max(delta,1/math.sqrt(im_width*im_height*channel))
     return im_norm
-#input:    
+
+
 def convolve(im,ker,biases):
     im_width, im_height, channel=im.shape
     #print(im.shape)
     #ker_width, ker_height,channel, n_filtre=ker.shape
-    channel, n_filtre,ker_width, ker_height=ker.shape
+    ker_width, ker_height, channel, n_filtre=ker.shape
     #print(ker.shape)
     out=np.zeros((im_width,im_height,n_filtre))
     ##buff=np.zeros((im_width+ker_width-1,im_height+ker_height-1,n_filtre))##create output vect
     for filter_index in range(n_filtre):
         for color_index in range(channel):#RGB mapping 
-           out[:,:,filter_index]=out[:,:,filter_index] + signal.convolve2d(im[:,:,color_index], ker[color_index,filter_index,:,:],mode='same')
+           #out[:,:,filter_index]=out[:,:,filter_index] + signal.convolve2d(im[:,:,color_index], ker[:,:, color_index,filter_index],mode='same')
+           out[:,:,filter_index]=out[:,:,filter_index] + convolution_2D(im[:,:,color_index], ker[:,:, color_index,filter_index])
             #temp=signal.convolve2d(im[:,:,color_index], ker[:,:,color_index,filter_index])
     out=out[:,:,0:filter_index+1]+biases[0:filter_index+1]
     return out
+
 
 
 def relu(vect):
@@ -127,14 +130,39 @@ def maxpool(vect):
                #out[i_x/stride,i_y/stride,i_channel]
                #np.amax(buff, axis=1)
     return out
-#input: n: 
 def reshape (vect,n):
     return np.reshape(vect,n)
 def matrix_multilpy(Matrix,Vect):
     return np.dot(Matrix,Vect)
 def softmax(vect):
     return (np.exp(vect))/(np.sum(np.exp(vect)))
-        
+
+def convolution_2D(image,kernel):
+   
+    #print(kernel.shape)
+    #print(image.shape)
+    image_x_max=image.shape[1]
+    image_y_max=image.shape[0]
+
+    kernel_x=kernel.shape[1]
+    kernel_y=kernel.shape[0]
+
+    xPadPos=int((kernel_y-1)/2)
+    yPadPos=xPadPos
+
+    image_add_zero=np.zeros(( image_y_max+kernel_y-1, image_x_max+kernel_x-1))
+    
+    image_add_zero[yPadPos:image_y_max+yPadPos, xPadPos:image_x_max+xPadPos] = image
+    calcul=np.zeros((kernel_y, kernel_x))
+    new_image=np.zeros((image_y_max, image_x_max))
+
+    for num in range(0, image_y_max):
+        for num2 in range(0, image_x_max):
+            calcul= kernel*image_add_zero[num:num+kernel_y, num2:num2+kernel_x]
+            new_image[num,num2]=calcul.sum()
+	   
+    return new_image
+  
 #RGB=3
 #image=numpy.zeros((x_len,y_len,RGB))
 #img = mpimg.imread("image.jpg")
