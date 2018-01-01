@@ -3,7 +3,7 @@
 import numpy as np
 np.set_printoptions(threshold=np.inf) # to forced full print of numpy array
 
-
+"""
 # Function to load filter parameters into kernel
 # channelNum --> number of filter in the conv layer
 # convLayerID --> number of the conv layer (first=1, second=2, ...)
@@ -21,7 +21,7 @@ def initKernel(fileName,kernel,channelNum,imageChannel):
 # Function to load vector parameters from file
 def initVector(FileName,vector,fcLayerID):
     vector[:,:]=np.loadtxt('fullyConnectedLayer'+str(fcLayerID))
-
+"""
 
 
 def readBiasesFromFile(fp,posInFile,matrix,channelNum,matrixDimension=3):
@@ -68,8 +68,8 @@ def readKernelChannelValueFromFile(fp,posInFile,kernel,channelNum,ImageChannelPo
             lineValueNum=4
               
         for i in range(0,lineValueNum):
-            kernel[ImageChannelPos,coeffReadCount+i,kernelHeightPos,kernelWitdhPos]=float(lineSplit[i])
-            #kernel[kernelHeightPos,kernelWitdhPos,ImageChannelPos,coeffReadCount+i]=float(lineSplit[i])
+            #kernel[ImageChannelPos,coeffReadCount+i,kernelHeightPos,kernelWitdhPos]=float(lineSplit[i])
+            kernel[kernelHeightPos,kernelWitdhPos,ImageChannelPos,coeffReadCount+i]=float(lineSplit[i])
         coeffReadCount+=4
 
 def readFClayerChannelValueFromFile(fp,posInFile,fcMatrix,matrixHeightPos,fcMatrixWidth):
@@ -95,16 +95,16 @@ def readFClayerChannelValueFromFile(fp,posInFile,fcMatrix,matrixHeightPos,fcMatr
     
         
 def initkernelFromFile(fp,posInFile,kernel):
-
+    """
     ImageChannelNum=kernel.shape[0]
     channelNum=kernel.shape[1]
     kernelSize=kernel.shape[2]
-    
     """
+    
     ImageChannelNum=kernel.shape[2]
     channelNum=kernel.shape[3]
     kernelSize=kernel.shape[0]
-    """
+    
     lineRead=fp.readline()
     #print(lineRead)
     
@@ -137,29 +137,29 @@ def loadWeightFromFile(fileName,kernelConvLayer1,kernelConvLayer2,kernelConvLaye
                        biasConvLayer2,biasConvLayer3,fcLayerMatrix,biasfcLayer):
     fp=open(fileName,'r')
     posInFile=0
-    convLayer1_ChannelNum=kernelConvLayer1.shape[1]
-    convLayer2_ChannelNum=kernelConvLayer2.shape[1]
-    convLayer3_ChannelNum=kernelConvLayer3.shape[1]
+    convLayer1_ChannelNum=kernelConvLayer1.shape[3]
+    convLayer2_ChannelNum=kernelConvLayer2.shape[3]
+    convLayer3_ChannelNum=kernelConvLayer3.shape[3]
     fcLayerChannelNum=biasfcLayer.shape[1]
     
     # ConvLayer 1 weight loading
-    #print('done layer1')
+    print('LOADING CONVOLUTION LAYER 1 WEIGHT')
     readBiasesFromFile(fp,posInFile,biasConvLayer1,convLayer1_ChannelNum)
     initkernelFromFile(fp,posInFile,kernelConvLayer1)
 
     # ConvLayer 2 weight loading 
-    #print('done layer2')
+    print('LOADING CONVOLUTION LAYER 2 WEIGHT')
     readBiasesFromFile(fp,posInFile,biasConvLayer2,convLayer2_ChannelNum)
     initkernelFromFile(fp,posInFile,kernelConvLayer2)
 
     # ConvLayer 3 weight loading
-    #print('done layer3')
+    print('LOADING CONVOLUTION LAYER 3 WEIGHT')
     readBiasesFromFile(fp,posInFile,biasConvLayer3,convLayer3_ChannelNum)
     initkernelFromFile(fp,posInFile,kernelConvLayer3)
 
     # FullyConnectedLayer
-    #print('LOADING FULLY CONNECTED LAYER WEIGHT')
+    print('LOADING FULLY CONNECTED LAYER WEIGHT')
     readBiasesFromFile(fp,posInFile,biasfcLayer,fcLayerChannelNum,2)
     initFClayerFromFile(fp,posInFile,fcLayerMatrix)
 
-#    print('FINISHED LOADING WEIGHT')
+    print('FINISHED LOADING WEIGHT')
