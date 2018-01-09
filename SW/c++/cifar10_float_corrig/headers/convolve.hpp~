@@ -1,0 +1,16 @@
+
+
+
+#ifndef CONVOLVE_HPP
+#define CONVOLVE_HPP
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <math.h>
+
+using namespace std;
+double*** convolve(char*** im, double**** ker,int* im_size, int* ker_size);
+
+#endif
+

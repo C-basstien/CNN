@@ -1,0 +1,88 @@
+#include "../headers/main.hpp"
+
+
+int main()
+{
+    cout<<"Start cifar10 program"<<endl;
+    double img_red[NB_LIGNE][NB_COLONNE];
+    double img_green[NB_LIGNE][NB_COLONNE];
+    double img_blue[NB_LIGNE][NB_COLONNE];
+    /**Weight**/
+    double coeff_weight1[MAX_KER];unsigned int weight1_size[4]={3,3,3,64};//[3][64][3][3];
+    double coeff_weight2[MAX_KER];unsigned int weight2_size[4]={3,3,64,32};//[64][32][3][3];
+    double coeff_weight3[MAX_KER];unsigned int weight3_size[4]={3,3,32,20};//[32][20][3][3];
+    /**Biases**/
+    double coeff_biases1[MAX_BIAS];unsigned int size_biases1=64;//[64];
+    double coeff_biases2[MAX_BIAS];unsigned int size_biases2=32;//[32];
+    double coeff_biases3[MAX_BIAS];unsigned int size_biases3=20;//[20];
+    double coeff_biases4[NB_BIAS_4];unsigned int size_biases4=10;//[10];
+    /**Perceptron**/
+    double coeff_reshape[10][180];
+    cout<<"Read and normalize image"<<endl;
+    normalize_image("./cifardata/data_batch_1.bin",img_red,img_green,img_blue);
+    double matrix_in[MAX_IM];
+    for(int L=0;L<24;L++)
+    {
+      for(int C=0;C<24;C++)
+        {
+          matrix_in[L*3+C*3*24]=img_red[L][C];
+          matrix_in[1+L*3+C*3*24]=img_green[L][C];
+          matrix_in[2+L*3+C*3*24]=img_blue[L][C];
+        }
+    }
+    double conv_out1[MAX_IM];
+    double conv_out2[MAX_IM];
+    double conv_out3[MAX_IM];
+    double pool_out1[MAX_IM];
+    double pool_out2[MAX_IM];
+    double pool_out3[MAX_IM];
+    double reshape_out[180];
+    double matprod_out[10];
+    double softmax_out[10];
+    unsigned int sig_size[3]={24,24,3};
+    cout<<"Read coefficients"<<endl;
+    read_coefficient("./cifardata/CNN_coeff_3x3.txt",
+                     coeff_weight1,weight1_size,
+                     coeff_weight2,weight2_size,
+                     coeff_weight3,weight3_size,
+                     coeff_biases1,
+                     coeff_biases2,
+                     coeff_biases3,
+                     coeff_biases4,
+                     coeff_reshape);
+    cout<<"Layer1"<<endl;
+    	/***LAYER 1***/
+    convolve(matrix_in,conv_out1,coeff_weight1,coeff_biases1,sig_size,weight1_size,size_biases1);
+    for(int i = 0; i < 64*24 ; i++){
+      std::cout << conv_out1[i]  << "\n";
+    }
+    cout << "Convolution1 Done" << endl;
+	relu(conv_out1);
+    cout << "Relu1 Done" << endl;
+    maxpool(conv_out1,pool_out1,sig_size,2,3);
+    cout << "Maxpool1 Done" << endl;
+	/***LAYER 2***/
+    convolve(pool_out1,conv_out2,coeff_weight2,coeff_biases2,sig_size,weight2_size,size_biases2);
+    cout << "Convolution2 Done" << endl;
+	relu(conv_out2);
+    cout << "Relu2 Done" << endl;
+    maxpool(conv_out2,pool_out2,sig_size,2,3);
+    cout << "Maxpool2 Done" << endl;
+
+	/***LAYER 3***/
+    convolve(pool_out2,conv_out3,coeff_weight3,coeff_biases3,sig_size,weight3_size,size_biases3);
+    cout << "Convolution3 Done" << endl;
+	relu(conv_out3);
+    cout << "Relu3 Done" << endl;
+    maxpool(conv_out3,pool_out3,sig_size,2,3);
+    cout << "Maxpool3 Done" << endl;
+	/**FULLY CONNECTED LAYER**/
+    reshape(pool_out3,reshape_out);
+    matrix_product(reshape_out,matprod_out,coeff_reshape,coeff_biases4);
+    softmax(matprod_out,softmax_out);
+    cout<<endl;
+    for(int i=0;i<10;i++){cout<<i<<":"<<" "<<100*softmax_out[i]<<"% ";}
+    cout<<endl;
+    cout<<"End cifar10 program"<<endl;
+    return 0;
+}
